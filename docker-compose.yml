@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15.2
+    container_name: security_bank
+    restart: always
+    volumes:
+      - ./db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_DB=security_bank
+      - POSTGRES_USER=alejandro
+      - POSTGRES_PASSWORD=debuggeandoideas
+    ports:
+      - "5432:5432"
