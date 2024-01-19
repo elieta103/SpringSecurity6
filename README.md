@@ -84,3 +84,10 @@
 
     - @Bean
     - PasswordEncoder passwordEncoder(){...}
+  
+  - Para agregar codigo en rama :
+    - git checkout -b "02/custom_users-inMemory_and_jdbc"  (SE REALIZÓ AL INICIO)
+    - git status
+    - git add .
+    - git commit -m "02/custom_users-inMemory_and_jdbc"
+    - git push -u origin 02/custom_users-inMemory_and_jdbc 
