@@ -35,9 +35,9 @@
                                                   ('user', 'user');
 
 - Crear base de datos con docker
-  - Ver docker-compose.yml, .\db\sql\create_schema.sql, .\db\sql\data.sql
+  - Ver docker-compose.yml, .\db\sql\init.sql
   - Verificar que no este levantado otro contendedor de postgres
-    - Borrar y levantar nuevo container para refrescar cambios en el script. init.sql
+    - Borrar y levantar nuevo container para refrescar cambios en el script: init.sql
     - docker-compose down, docker ps -a, docker rm container, docker rmi imagen
     - docker-compose up -d Ó docker compose up -d
     - docker exec -it security_bank psql -U alejandro -d security_bank 
