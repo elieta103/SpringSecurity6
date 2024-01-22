@@ -1,32 +1,21 @@
-## Spring Security 03
+## Spring Security 04
 - Crear una nueva rama 
-  - git checkout -b "03/password_encoders"
+  - git checkout -b "04/authentication_provider"
 
-- Implementacion propia de PasswordEncoder
-  - Solo puede haber un passwordEncoder 
-    - Eliminar en SecurityConfig :
-      - @Bean
-      - PasswordEncoder passwordEncoder()
-    - Crear :
-      - public class MyPasswordEncoder implements PasswordEncoder{...}
-    - Obtener el password de super_user@debuggeandoideas.com en HasCode y actualizar en bd
-      - update customers set pwd ='-635289258' where id = 1;
-    - Reingresar con : super_user@debuggeandoideas.com, to_be_encoded   Deberia de permitir el acceso.
+- Implementacion Authentication Provider
+  - Es una alternativa al uso de UserDetails
+  - Eliminar MyPasswordEncoder, CustomerUserDetails
+  - En SecurityConfig Regresar a :  NoOpPasswordEncoder
+  - Agregar :
+    - @Component
+    - public class MyAuthenticationProvider implements AuthenticationProvider{...}
+  - Es opcional deshabilitar CORS y CSRF
+    - http.cors(AbstractHttpConfigurer::disable);
+    - http.csrf(AbstractHttpConfigurer::disable);
 
-- Implementacion de BCrypPasswordEncoder
-  - Solo puede haber un passwordEncoder
-    - Eliminar MyPasswordEncoder
-      - Comentar @Component, implements PasswordEncoder y @Override
-    - Agregar :
-      - @Bean
-      - PasswordEncoder passwordEncoder(){...}
-    - Agregar CommandLineRunner en Application , para ver el nuevo Hash del pwd.
-    - Actualizar en la BD.
-      - update customers set pwd ='$2a$10$VEBpZIOzTwolMvSnuLHIzufGWatekpoQK0DaZ/grDW2WERYty02l2' where id = 1;
-      
   - Para agregar codigo en rama :
-    - git checkout -b "03/password_encoders"  (SE REALIZÓ AL INICIO)
+    - git checkout -b "04/authentication_provider"  (SE REALIZÓ AL INICIO)
     - git status
     - git add .
-    - git commit -m "03/password_encoders"
-    - git push -u origin 03/password_encoders 
+    - git commit -m "04/authentication_provider"
+    - git push -u origin 04/authentication_provider

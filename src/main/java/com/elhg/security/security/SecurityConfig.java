@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -24,6 +25,8 @@ public class SecurityConfig {
                         //.requestMatchers("/welcome", "/about_us").permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
+        //http.cors(AbstractHttpConfigurer::disable);
+        //http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
@@ -46,14 +49,14 @@ public class SecurityConfig {
     }*/
 
 
-    /*@Bean
-    PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }*/
-
     @Bean
     PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
+
+    /*@Bean
+    PasswordEncoder passwordEncoder(){
+        return  new BCryptPasswordEncoder();
+    }*/
 
 }
