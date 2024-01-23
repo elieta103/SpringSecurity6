@@ -2,6 +2,23 @@
 - Crear una nueva rama 
   - git checkout -b "05/cors-csrf"
 
+- CORS
+- Cross Origin Resources Sharing
+- Intercambio de recursos de origen cruzado
+	- Basado Headers Http
+	- Permite indicar dominios, esquemas puerto distinto al suyo.
+	- Es un politica que implemntan los navegadores
+
+- CSRF
+- Cross-Site Request Forgery
+- Falsificacion de peticion en sitios cruzados
+	- Tipo de vulnerabilidad de un sitio web, en el que comandos no autorizados son 
+	  enviados por un usuario en el cual el sitio confia.
+	- Usuario legitimo manda peticiones, sin saberlo
+	- Para que ocurra CSRF deben tener 3 cosas 
+		- (acciones relevantes, manejo de session basado en cookies, parametros predecible)
+	- Spring boot usa JSESSIONID, por lo tanto puede ser vulnerable.
+
 - Levantando el front y back manda el error :
   - Desde postman funciona.
   - Desde el browser no funciona.
