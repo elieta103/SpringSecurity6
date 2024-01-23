@@ -1,5 +1,6 @@
 package com.elhg.security.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import java.util.Map;
 @RestController
 public class LoansController {
 
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping
     public Map<String, String> loans(){
         return Collections.singletonMap("msj","loans");

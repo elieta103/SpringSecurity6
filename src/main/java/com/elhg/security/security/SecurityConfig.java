@@ -3,6 +3,7 @@ package com.elhg.security.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +24,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -31,7 +33,8 @@ public class SecurityConfig {
         requestHandler.setCsrfRequestAttributeName("_csrf");
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loans","/balance", "/accounts", "/cards").authenticated()
+                        //.requestMatchers("/loans", "/balance").hasRole("USER")
+                        .requestMatchers("/accounts", "/cards").hasRole("ADMIN")
                         .anyRequest().permitAll())
                         //.requestMatchers("/welcome", "/about_us").permitAll())
                 .formLogin(Customizer.withDefaults())
