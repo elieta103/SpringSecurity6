@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 public class BalanceController {
 
-    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping
     public Map<String, String> balance(){
         return Collections.singletonMap("msj","balance");

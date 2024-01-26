@@ -1,5 +1,7 @@
 package com.elhg.security.security;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -24,16 +26,18 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Agregar filtro, se ejecuta antes de BasicAuthenticationFilter
+        http.addFilterBefore(new ApiKeyFilter(), BasicAuthenticationFilter.class);
+
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
 
         http.authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/loans", "/balance").hasRole("USER")
+                        .requestMatchers("/loans", "/balance").hasRole("USER")
                         .requestMatchers("/accounts", "/cards").hasRole("ADMIN")
                         .anyRequest().permitAll())
                         //.requestMatchers("/welcome", "/about_us").permitAll())
