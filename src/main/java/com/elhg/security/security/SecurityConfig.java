@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -29,9 +32,8 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Agregar filtro, se ejecuta antes de BasicAuthenticationFilter
-        http.addFilterBefore(new ApiKeyFilter(), BasicAuthenticationFilter.class);
+    SecurityFilterChain securityFilterChain(HttpSecurity http, JWTValidationFilter jwtValidationFilter) throws Exception {
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
@@ -43,10 +45,11 @@ public class SecurityConfig {
                         //.requestMatchers("/welcome", "/about_us").permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
+        http.addFilterAfter(jwtValidationFilter,BasicAuthenticationFilter.class);
         http.cors(cors-> corsConfigurationSource());
         // En todas las url se envía el token, pero se ignora en /welcome y /about_us
         http.csrf(csrf-> csrf.csrfTokenRequestHandler(requestHandler)
-                .ignoringRequestMatchers("/welcome","/about_us")
+                .ignoringRequestMatchers("/welcome","/about_us", "/authenticate")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
@@ -67,6 +70,11 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return  source;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)throws Exception{
+        return configuration.getAuthenticationManager();
     }
 
     /*@Bean

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class AppSecurityApplication implements CommandLineRunner {
 
 	@Autowired
