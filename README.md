@@ -1,22 +1,22 @@
 ## Spring Security 08
-- Crear una nueva rama 
+### Crear una nueva rama 
   - git checkout -b "08/jwt"
 
-- JWT esta codificado Base64, tiene reversa.
-- Tiene un Header, Payload, Signature.
+### JWT esta codificado Base64, tiene reversa.
+  - Tiene un Header, Payload, Signature.
 
-- Para esta sección eliminar :
+### Para esta sección eliminar :
   - La clase ApiKeyFilter.class
   - En SecurityConfig : http.addFilterBefore(new ApiKeyFilter(), BasicAuthenticationFilter.class);
   
-- Agregar package services
+### Agregar package services
 
-- Agregar dependencias de JWT
+### Agregar dependencias de JWT
   - jjwt-jackson  0.11.5
   - jjwt-impl     0.11.5
   - jjwt-api      0.11.5
 
-- Agregar código 
+### Agregar código 
   - Crear un public class JwtUserDetailsService implements UserDetailsService{...}
   - Crear un public class JwtService {...}
   - Crear en package components : public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint{...} 
@@ -46,7 +46,7 @@
   - En SecurityFilterChain agregar un sessionManagment
     - http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); 
 
-- Probando Creacion del JWT, desde postman
+### Probando Creacion del JWT, desde postman
   - POST        http://localhost:8080/authenticate
   -  {  "username":"account@debuggeandoieas.com",
   -     "password":"to_be_encoded"
@@ -54,7 +54,7 @@
   - https://jwt.io,  Validar JWT
   - Para quitar el mensaje : "Invalid Signature", Checked la opcion "secret base64 encoded"
 
-- Una vez que funciona la generacion del token, se debe agregar un filtro
+### Una vez que funciona la generacion del token, se debe agregar un filtro
   - public class JWTValidationFilter extends OncePerRequestFilter {...}
   - En el SecurityConfig :
   - Cuando el filtro no tiene dependencias se puede agregar como :
@@ -63,9 +63,9 @@
   - SecurityFilterChain securityFilterChain(HttpSecurity http, JWTValidationFilter jwtValidationFilter) throws Exception {...}
   - http.addFilterAfter(jwtValidationFilter,BasicAuthenticationFilter.class);
   
-- Se puede eliminar el MyAuthenticationProvider (user y pwd), ya que ahora el login es por JWT.
+### Se puede eliminar el MyAuthenticationProvider (user y pwd), ya que ahora el login es por JWT.
   
-- Probando todo:
+### Probando todo:
   - Login/Obtener JWT
   - POST        http://localhost:8080/authenticate
   -  {  "username":"account@debuggeandoieas.com",
@@ -75,7 +75,7 @@
   - Si generó el token con username account que es ADMIN, solo puedo acceder a: .requestMatchers("/accounts", "/cards").hasRole("ADMIN")
   - Se mantienen los roles.
 
-- Para agregar codigo en rama :
+### Para agregar codigo en rama :
   - git checkout -b "08/jwt"  (SE REALIZÓ AL INICIO)
   - git status
   - git add .
